@@ -13,12 +13,14 @@ const AuthProvider = ({ children }: IAuthProps) => {
   const [refreshToken, setRefreshToken] = useState<any | null>();
   const [user, setUser] = useState("");
 
-  async function login({ email_or_username, password }: IAuth) {
+  async function login({ emailOrUsername, password }: IAuth) {
     return await axios
-      .post("/auth/signin", { email_or_username, password })
+      .post("/auth/signin", { emailOrUsername, password })
       .then((response) => {
-        if (response.data.access_token) localStorage.setItem("accessToken", response.data.access_token);
-        if (response.data.refresh_token) localStorage.setItem("refreshToken", response.data.refresh_token);
+        if (response.data.access_token)
+          localStorage.setItem("accessToken", response.data.access_token);
+        if (response.data.refresh_token)
+          localStorage.setItem("refreshToken", response.data.refresh_token);
         setAccessToken(localStorage.getItem("accessToken"));
         setRefreshToken(localStorage.getItem("refreshToken"));
         setUser(response.data);
@@ -32,10 +34,16 @@ const AuthProvider = ({ children }: IAuthProps) => {
 
   async function refreshTokenFunc() {
     return await axios
-      .post("/auth/refreshToken", {}, { headers: { Authorization: `Bearer ${refreshToken}` } })
+      .post(
+        "/auth/refreshToken",
+        {},
+        { headers: { Authorization: `Bearer ${refreshToken}` } }
+      )
       .then((response) => {
-        if (response.data.access_token) localStorage.setItem("accessToken", response.data.access_token);
-        if (response.data.refresh_token) localStorage.setItem("refreshToken", response.data.refresh_token);
+        if (response.data.access_token)
+          localStorage.setItem("accessToken", response.data.access_token);
+        if (response.data.refresh_token)
+          localStorage.setItem("refreshToken", response.data.refresh_token);
         setAccessToken(localStorage.getItem("accessToken"));
         setRefreshToken(localStorage.getItem("refreshToken"));
       })

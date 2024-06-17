@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Background, ButtonLogin, ButtonLoginForm, ForgetPassword, InputEmail, InputPassword, ModalLogin, TextHeader, TextLogin } from "./Login.style";
+import {
+  Background,
+  ButtonLogin,
+  ButtonLoginForm,
+  ForgetPassword,
+  InputEmail,
+  InputPassword,
+  ModalLogin,
+  TextHeader,
+  TextLogin,
+} from "./Login.style";
 import { Redirect } from "react-router-dom";
 import { LockFilled, MailFilled } from "@ant-design/icons";
 import { useAuthContext } from "./Auth/AuthContext";
@@ -7,7 +17,7 @@ import { Space, Spin } from "antd";
 
 function Login() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [email_or_username, set_email_or_username] = useState<string>("");
+  const [emailOrUsername, set_email_or_username] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { login, accessToken } = useAuthContext();
   const [isClickButton, setIsClickButton] = useState(false);
@@ -24,7 +34,7 @@ function Login() {
   }
   let backgroud_color = "";
   function buttonLogin() {
-    login({ email_or_username, password });
+    login({ emailOrUsername, password });
     setIsClickButton(true);
     backgroud_color = "#d7d7d7f";
     console.log(isClickButton);
@@ -44,11 +54,25 @@ function Login() {
           cancelButtonProps={{ style: { display: "none" } }}
           okButtonProps={{ style: { display: "none" } }}
         >
-          <InputEmail placeholder="E-mail" size="large" prefix={<MailFilled />} onChange={(event) => set_email_or_username(event.target.value)} required={true} />
-          <InputPassword placeholder="Password" size="large" prefix={<LockFilled />} onChange={(event) => setPassword(event.target.value)} />
+          <InputEmail
+            placeholder="E-mail"
+            size="large"
+            prefix={<MailFilled />}
+            onChange={(event) => set_email_or_username(event.target.value)}
+            required={true}
+          />
+          <InputPassword
+            placeholder="Password"
+            size="large"
+            prefix={<LockFilled />}
+            onChange={(event) => setPassword(event.target.value)}
+          />
           <ForgetPassword>ลืมรหัสผ่าน ?</ForgetPassword>
           {isClickButton === false && (
-            <ButtonLoginForm style={{ color: backgroud_color }} onClick={buttonLogin}>
+            <ButtonLoginForm
+              style={{ color: backgroud_color }}
+              onClick={buttonLogin}
+            >
               เข้าสู่ระบบ
             </ButtonLoginForm>
           )}
