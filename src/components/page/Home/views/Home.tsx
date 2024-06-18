@@ -36,7 +36,7 @@ function Home() {
         let arr: IPillChannelData[] = [];
         let pillChannelData: IPillChannelData[] =
           response.data["pill_channel_datas"];
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 1; i <= 8; i++) {
           const data = pillChannelData.filter(
             (pill) => pill.channel_id === i.toString()
           );
@@ -96,11 +96,13 @@ function Home() {
         </RowContainer>
 
         <RowContainer>
-          {checkHaveData(4, 8)}
+          {checkHaveData(4, 12)}
 
-          {checkHaveData(5, 8)}
-
-          {checkHaveData(6, 8)}
+          {checkHaveData(5, 12)}
+        </RowContainer>
+        <RowContainer>
+          {checkHaveData(6, 12)}
+          {checkHaveData(7, 12)}
         </RowContainer>
       </div>
     );
