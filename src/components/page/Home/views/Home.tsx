@@ -31,25 +31,17 @@ function Home() {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
-        console.log("PILL CHANNEL SCREEN", response.data["pill_channel_datas"]);
-        console.log("PILL CHANNEL SCREEN");
         let arr: IPillChannelData[] = [];
         let pillChannelData: IPillChannelData[] =
           response.data["pill_channel_datas"];
-        for (let i = 1; i <= 8; i++) {
-          const data = pillChannelData.filter(
-            (pill) => pill.channel_id === i.toString()
+        for (let i = 0; i <= 7; i++) {
+          let pillData = pillChannelData.find(
+            (data) => data.channel_id === i.toString()
           );
-          if (data.length > 0) {
-            arr.push({
-              channel_id: data[0].channel_id,
-              pill_name: data[0].pill_name,
-            });
+          if (pillData) {
+            arr.push(pillData);
           } else {
-            arr.push({
-              channel_id: "-1",
-              pill_name: "-1",
-            });
+            arr.push({ channel_id: i.toString(), pill_name: "-1" });
           }
         }
         setPillData(arr);
@@ -65,7 +57,7 @@ function Home() {
       return (
         <BoxPillChannel
           span={spanNum}
-          onClick={() => history.push(`/detailPillScreen/${index + 1}`)}
+          onClick={() => history.push(`/detailPillScreen/${index}`)}
         >
           <PillChannelNo>ช่องที่{index + 1}</PillChannelNo>
           <PillName>{pillData[index].pill_name}</PillName>
@@ -75,7 +67,6 @@ function Home() {
       return (
         <Col span={spanNum}>
           <div></div>
-          <div>{}</div>
         </Col>
       );
     }
@@ -88,16 +79,12 @@ function Home() {
           {checkHaveData(0, 12)}
           {checkHaveData(1, 12)}
         </RowContainer>
-
         <RowContainer>
           {checkHaveData(2, 12)}
-
           {checkHaveData(3, 12)}
         </RowContainer>
-
         <RowContainer>
           {checkHaveData(4, 12)}
-
           {checkHaveData(5, 12)}
         </RowContainer>
         <RowContainer>
