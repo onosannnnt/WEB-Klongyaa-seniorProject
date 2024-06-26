@@ -1,14 +1,41 @@
 export function dateFormat(dateString: string) {
   const DATE = new Date(dateString);
-  const MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-  const dateFormatCompleted = DATE.getDate() + " " + MONTHS[DATE.getMonth()] + " " + DATE.getFullYear();
+  const MONTHS = [
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค.",
+  ];
+  const dateFormatCompleted =
+    DATE.getDate() + " " + MONTHS[DATE.getMonth()] + " " + DATE.getFullYear();
 
   return dateFormatCompleted;
 }
 
 export function dateFormatNotYear(dateString: string) {
   const DATE = new Date(dateString);
-  const MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+  const MONTHS = [
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค.",
+  ];
   const dateFormatCompleted = DATE.getDate() + " " + MONTHS[DATE.getMonth()];
 
   return dateFormatCompleted;
@@ -16,8 +43,9 @@ export function dateFormatNotYear(dateString: string) {
 
 export function timeFormat(dateTime: string) {
   const DATE = new Date(dateTime);
-  const hour = DATE.getHours();
-  const minute = DATE.getMinutes();
+  const gmtDate = new Date(DATE.valueOf() + 7 * 60 * 60 * 1000);
+  const hour = gmtDate.getHours();
+  const minute = gmtDate.getMinutes();
   let hourStr = hour.toString();
   let minuteStr = minute.toString();
   if (hourStr.length === 1) hourStr = "0" + hourStr;
