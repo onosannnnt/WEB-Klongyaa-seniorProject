@@ -218,7 +218,9 @@ function DetailPillScreen() {
         <>
           <TextTopic>
             ข้อมูลของยาช่องที่{" "}
-            <span style={{ color: "yellow" }}>{paramObjectId.id}</span>
+            <span style={{ color: "yellow" }}>
+              {Number(paramObjectId.id) + 1}
+            </span>
           </TextTopic>
           <TextPillName>
             ชื่อยา
