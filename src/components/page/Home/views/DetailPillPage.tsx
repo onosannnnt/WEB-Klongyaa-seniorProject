@@ -48,7 +48,8 @@ function DetailPillScreen() {
 
   const onSearch = (searchText: string) => {
     if (searchText.trim() === "") setOptions([]);
-    if (selectRealPllName?.value !== searchText) setSelectRealPillName(undefined);
+    if (selectRealPllName?.value !== searchText)
+      setSelectRealPillName(undefined);
     ApiGetRealPillByKeyword(searchText);
   };
 
@@ -70,24 +71,33 @@ function DetailPillScreen() {
   }
 
   async function ApiGetPillDetail() {
-    const accessToken: string = await CheckExpiredToken();
-    return await axios
-      .get("/pill-data/getPillChannelDetail/" + paramObjectId.id, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((response) => {
-        setDetailPill(response.data);
-        if (response.data?.real_pill_data !== null) {
-          setInputRealPillName(response.data?.real_pill_data.pill_name);
-        }
-        if (response.data?.real_pill_data !== null && response.data?.real_pill_data?.danger_pills.length > 0) {
-          let infoText: string = "";
-          response.data?.real_pill_data?.danger_pills?.map((item: any) => {
-            infoText = infoText + item.pill_name + ": " + item.reason + "\n";
-          });
-          setDangerPillInfo(infoText);
-        }
-      });
+    try {
+      const accessToken: string = await CheckExpiredToken();
+      return await axios
+        .get("/pill-data/getPillChannelDetail/" + paramObjectId.id, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((response) => {
+          setDetailPill(response.data);
+          if (response.data?.real_pill_data !== null) {
+            setInputRealPillName(response.data?.real_pill_data.pill_name);
+          }
+          if (
+            response.data?.real_pill_data !== null &&
+            response.data?.real_pill_data?.danger_pills.length > 0
+          ) {
+            let infoText: string = "";
+            response.data?.real_pill_data?.danger_pills?.map((item: any) => {
+              infoText = infoText + item.pill_name + ": " + item.reason + "\n";
+            });
+            setDangerPillInfo(infoText);
+          }
+        });
+    } catch (e) {
+      if (!detailPill) {
+        history.push("/home");
+      }
+    }
   }
 
   async function ApiGetRealPillByKeyword(keyword: string) {
@@ -114,7 +124,7 @@ function DetailPillScreen() {
                   value: pill.pill_name,
                   rid: pill.rid,
                 };
-              }),
+              })
         );
       })
       .catch((error) => {
@@ -135,13 +145,16 @@ function DetailPillScreen() {
           },
           {
             headers: { Authorization: `Bearer ${accessToken}` },
-          },
+          }
         )
         .then((response) => {
           setSelectRealPillName(undefined);
           setDetailPill(response.data);
           setOptions([]);
-          if (response.data?.real_pill_data !== null && response.data?.real_pill_data?.danger_pills.length > 0) {
+          if (
+            response.data?.real_pill_data !== null &&
+            response.data?.real_pill_data?.danger_pills.length > 0
+          ) {
             let infoText: string = "";
             response.data?.real_pill_data?.danger_pills?.map((item: any) => {
               infoText = infoText + item.pill_name + ": " + item.reason + "\n";
@@ -171,7 +184,7 @@ function DetailPillScreen() {
         },
         {
           headers: { Authorization: `Bearer ${accessToken}` },
-        },
+        }
       )
       .then((res) => {
         setSelectRealPillName(undefined);
@@ -196,28 +209,42 @@ function DetailPillScreen() {
       <Navbar />
       <BackButton onClick={() => history.push("/home")} />
       {isShowNotification ? (
-        <NotificationCreatedPostSuccess message="บันทึกข้อมูลสำเร็จ" type="success" showIcon />
+        <NotificationCreatedPostSuccess
+          message="บันทึกข้อมูลสำเร็จ"
+          type="success"
+          showIcon
+        />
       ) : detailPill ? (
         <>
           <TextTopic>
-            ข้อมูลของยาช่องที่ <span style={{ color: "yellow" }}>{paramObjectId.id}</span>
+            ข้อมูลของยาช่องที่{" "}
+            <span style={{ color: "yellow" }}>{paramObjectId.id}</span>
           </TextTopic>
           <TextPillName>
             ชื่อยา
             <SpanField>
-              <InputPillName placeholder={detailPill?.pill_name} disabled={true} />
+              <InputPillName
+                placeholder={detailPill?.pill_name}
+                disabled={true}
+              />
             </SpanField>
           </TextPillName>
           <TextTask>
             จำนวนยาท้ังหมด
             <SpanField>
-              <InputPillName placeholder={detailPill?.total + "   เม็ด"} disabled={true} />
+              <InputPillName
+                placeholder={detailPill?.total + "   เม็ด"}
+                disabled={true}
+              />
             </SpanField>
           </TextTask>
           <TextTask>
             จำนวนยาที่ต้องทาน
             <SpanField>
-              <InputPillName placeholder={detailPill?.pillsPerTime + "   เม็ด"} disabled={true} />
+              <InputPillName
+                placeholder={detailPill?.pillsPerTime + "   เม็ด"}
+                disabled={true}
+              />
             </SpanField>
           </TextTask>
           {detailPill?.take_times?.map((item: string, index: number) => {
@@ -231,16 +258,19 @@ function DetailPillScreen() {
             );
           })}
           <LineHorizontal />
-          {!detailPill?.real_pill_data && (
+          {/* {!detailPill?.real_pill_data && (
             <TextCheckInput>
-              คุณยังไม่ได้กรอกข้อมูลเพิ่มเติม <span style={{ fontWeight: "350" }}>กรอกข้อมูลเพื่อที่ระบบจะประมวลผลคุณสมบัติของยา</span>
+              คุณยังไม่ได้กรอกข้อมูลเพิ่มเติม{" "}
+              <span style={{ fontWeight: "350" }}>
+                กรอกข้อมูลเพื่อที่ระบบจะประมวลผลคุณสมบัติของยา
+              </span>
             </TextCheckInput>
           )}
           <ContainerMainPillName>
             <BoxMainPillName>
               <SpanMainPillName>
                 *ชื่อยาสามัญ
-                {/* <Input_Main_Pill_Name type="text" onChange={onChange} value={inputMainPillName} /> */}
+                <Input_Main_Pill_Name type="text" onChange={onChange} value={inputMainPillName} />
                 <InputMainPillName
                   disabled={!detailPill?.real_pill_data ? false : true}
                   options={options}
@@ -254,11 +284,25 @@ function DetailPillScreen() {
               </SpanMainPillName>
             </BoxMainPillName>
             {detailPill?.real_pill_data ? (
-              <ButtonSave onClick={ApiDeleteeRealNameInPillChannelData} style={{ backgroundColor: "#F25F5F", color: "white", border: "none" }}>
+              <ButtonSave
+                onClick={ApiDeleteeRealNameInPillChannelData}
+                style={{
+                  backgroundColor: "#F25F5F",
+                  color: "white",
+                  border: "none",
+                }}
+              >
                 ลบ
               </ButtonSave>
             ) : selectRealPllName ? (
-              <ButtonSave onClick={OnSubmitMainPillName} style={{ backgroundColor: "#6ADB89", color: "white", border: "none" }}>
+              <ButtonSave
+                onClick={OnSubmitMainPillName}
+                style={{
+                  backgroundColor: "#6ADB89",
+                  color: "white",
+                  border: "none",
+                }}
+              >
                 บันทึก
               </ButtonSave>
             ) : (
@@ -267,26 +311,42 @@ function DetailPillScreen() {
           </ContainerMainPillName>{" "}
           {detailPill?.real_pill_data && (
             <>
-              <TextTopicFeature>คุณสมบัติของยา{detailPill?.real_pill_data.pill_name}</TextTopicFeature>
+              <TextTopicFeature>
+                คุณสมบัติของยา{detailPill?.real_pill_data.pill_name}
+              </TextTopicFeature>
               <TextTopicProperties>
                 สรรพคุณ
-                <SpanFieldProperties>{detailPill?.real_pill_data.property}</SpanFieldProperties>
+                <SpanFieldProperties>
+                  {detailPill?.real_pill_data.property}
+                </SpanFieldProperties>
               </TextTopicProperties>
               <TextTopicProperties>
                 ผลข้างเคียง
-                <SpanFieldEffect>{detailPill?.real_pill_data.effect}</SpanFieldEffect>
+                <SpanFieldEffect>
+                  {detailPill?.real_pill_data.effect}
+                </SpanFieldEffect>
               </TextTopicProperties>
               <TextTopicProperties>
                 ห้ามกินคู่กับยาอะไร
-                <Tooltip placement="right" title={dangerPillInfo} overlayStyle={{ width: "300px" }}>
+                <Tooltip
+                  placement="right"
+                  title={dangerPillInfo}
+                  overlayStyle={{ width: "300px" }}
+                >
                   <ButtonDontEat shape="circle" icon={<QuestionOutlined />} />
                 </Tooltip>
-                {detailPill?.real_pill_data?.danger_pills?.map((item, index) => {
-                  return <ProhibitionBox key={index}>{item.pill_name}</ProhibitionBox>;
-                })}
+                {detailPill?.real_pill_data?.danger_pills?.map(
+                  (item, index) => {
+                    return (
+                      <ProhibitionBox key={index}>
+                        {item.pill_name}
+                      </ProhibitionBox>
+                    );
+                  }
+                )}
               </TextTopicProperties>
             </>
-          )}
+          )} */}
         </>
       ) : (
         <MainContainer>

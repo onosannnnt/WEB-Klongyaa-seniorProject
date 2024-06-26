@@ -5,7 +5,15 @@ import { Container } from "../shared/style/ForgettenRate.style";
 import { CheckExpiredToken } from "common/checkExpiredToken";
 
 function ChartForgettenWeek() {
-  const LABEL_WEEK = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"];
+  const LABEL_WEEK = [
+    "อาทิตย์",
+    "จันทร์",
+    "อังคาร",
+    "พุธ",
+    "พฤหัสบดี",
+    "ศุกร์",
+    "เสาร์",
+  ];
   const [dataWeek, setDataWeek] = useState<[]>([]);
   const [rateMax, setRateMax] = useState<number>();
   const [labelWeek, setLabelWeek] = useState<string[]>([]);
@@ -13,7 +21,9 @@ function ChartForgettenWeek() {
   async function ApiGetForgettenRateWeek() {
     const accessToken: string = await CheckExpiredToken();
     return await axios
-      .get("/pill-data/forgottenRate/week", { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get("/pill-data/forgottenRate/week", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((response) => {
         let startDateStr: string = response.data["start_date"];
         let dayNum = new Date(startDateStr).getDay();
@@ -37,6 +47,7 @@ function ChartForgettenWeek() {
 
   useEffect(() => {
     ApiGetForgettenRateWeek();
+    console.log(dataWeek);
   }, []);
   return (
     <Container>
