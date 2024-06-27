@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { IAuth } from "./interface/User.interface";
 import axios from "../../../../config/axiosInstance";
 import { CheckExpiredToken } from "common/checkExpiredToken";
+import Swal from "sweetalert2";
 
 const AuthContext = React.createContext<any>(null);
 interface IAuthProps {
@@ -28,7 +29,16 @@ const AuthProvider = ({ children }: IAuthProps) => {
         return user;
       })
       .catch((err) => {
-        console.error("ERROR CANNOT LOGIN", err);
+        Swal.fire({
+          icon: "error",
+          title: "เข้าสู่ระบบไม่สำเร็จ",
+          text: "กรุณาตรวจสอบชื่อผู้ใช้หรือรหัสผ่าน",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: true,
+        }).then(() => {
+          window.location.reload();
+        });
       });
   }
 
