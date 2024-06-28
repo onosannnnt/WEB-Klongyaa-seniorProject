@@ -43,7 +43,7 @@ export function dateFormatNotYear(dateString: string) {
 
 export function timeFormat(dateTime: string) {
   const DATE = new Date(dateTime);
-  const gmtDate = new Date(DATE.valueOf() + 7 * 60 * 60 * 1000);
+  const gmtDate = new Date(DATE.valueOf() + 0 * 60 * 60 * 1000);
   const hour = gmtDate.getHours();
   const minute = gmtDate.getMinutes();
   let hourStr = hour.toString();
